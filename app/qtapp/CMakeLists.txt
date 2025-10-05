@@ -1,11 +1,19 @@
 # CMake file for the QT GUI apps
 # set output dir
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+
+# Ensure data root dir is set (fallback to <prefix>/share) so install destinations
+# such as ${CMAKE_INSTALL_DATAROOTDIR}/icons don't resolve to "/icons".
+if(NOT DEFINED CMAKE_INSTALL_DATAROOTDIR OR CMAKE_INSTALL_DATAROOTDIR STREQUAL "")
+    set(CMAKE_INSTALL_DATAROOTDIR "${CMAKE_INSTALL_PREFIX}/share")
+endif()
+
 set(XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_DATAROOTDIR}/applications")
 set(XDG_APPS_PIXMAPS_DIR "${CMAKE_INSTALL_DATAROOTDIR}/icons/")
 
 include_directories(
 	${PROJECT_SOURCE_DIR}/src
+	${PROJECT_SOURCE_DIR}/../../src
 	appcmn_qt
 	widgets_qt
 )

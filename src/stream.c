@@ -75,7 +75,7 @@
 *                           suppress warning for buffer overflow by sprintf()
 *                           use integer types in stdint.h
 *-----------------------------------------------------------------------------*/
-#define _POSIX_C_SOURCE 199506
+#define _POSIX_C_SOURCE 200809L
 #include <ctype.h>
 #include "rtklib.h"
 #ifndef WIN32
@@ -94,6 +94,17 @@
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#endif
+
+/* compatibility: some macOS SDKs don't expose higher baud rate macros */
+#ifndef B57600
+#define B57600 57600
+#endif
+#ifndef B115200
+#define B115200 115200
+#endif
+#ifndef B230400
+#define B230400 230400
 #endif
 
 /* constants -----------------------------------------------------------------*/
@@ -1186,7 +1197,7 @@ static int gentcp(tcp_t *tcp, int type, char *msg)
                 tcp->state=-1;
                 return 0;
             }
-            memcpy(&tcp->addr.sin_addr,hp->h_addr,hp->h_length);
+            memcpy(&tcp->addr.sin_addr,hp->h_addr_list[0],hp->h_length);
         }
         if (bind(tcp->sock,(struct sockaddr *)&tcp->addr,sizeof(tcp->addr))==-1) {
             sprintf(msg,"bind error (%d) : %d",errsock(),tcp->port);
@@ -1208,7 +1219,7 @@ static int gentcp(tcp_t *tcp, int type, char *msg)
             tcp->tdis=tickget();
             return 0;
         }
-        memcpy(&tcp->addr.sin_addr,hp->h_addr,hp->h_length);
+    memcpy(&tcp->addr.sin_addr,hp->h_addr_list[0],hp->h_length);
     }
     tcp->state=1;
     tcp->tact=tickget();
@@ -2186,7 +2197,7 @@ static udp_t *genudp(int type, int port, const char *saddr, char *msg)
             free(udp);
             return NULL;
         }
-        memcpy(&udp->addr.sin_addr,hp->h_addr,hp->h_length);
+    memcpy(&udp->addr.sin_addr,hp->h_addr_list[0],hp->h_length);
     }
     return udp;
 }

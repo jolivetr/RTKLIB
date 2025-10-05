@@ -1,4 +1,5 @@
 # makefile for rnx2rtkp
+CC = gcc
 BINDIR  = /usr/local/bin
 SRC     = ../../../../src
 
@@ -7,7 +8,7 @@ OPTS    = -DTRACE -DENAGLO -DENAQZS -DENAGAL -DENACMP -DENAIRN -DNFREQ=4 -DNEXOB
 #OPTS    = -DENAGLO -DENAQZS -DENAGAL -DENACMP -DNFREQ=2
 
 # for no lapack
-CFLAGS  = -std=c99 -Wall -O3 -pedantic -Wno-unused-but-set-variable -I$(SRC) $(OPTS)
+CFLAGS  = -std=c99 -Wall -O3 -pedantic -Wno-implicit-function-declaration -Wno-unused-but-set-variable -I$(SRC) $(OPTS)
 LDLIBS  = -lgfortran -lm
 
 #CFLAGS  = -std=c99 -Wall -O3 -pedantic -Wno-unused-but-set-variable -I$(SRC) -DLAPACK $(OPTS)

@@ -20,6 +20,8 @@ set(TEST_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test/data)
 # configure rtklib
 add_definitions(-DENAGLO -DENAQZS -DENACMP -DENAGAL -DENAIRN -DNFREQ=3 -DNEXOBS=3 -DTRACE -DSVR_REUSEADDR)
 
+# Append to current flags
+list(APPEND CMAKE_C_FLAGS -Wno-implicit-function-declaration)
 
 # 3rd party libs
 add_subdirectory(lib)
